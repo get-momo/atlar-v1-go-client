@@ -1,6 +1,6 @@
 module github.com/get-momo/atlar-v1-go-client
 
-go 1.21.4
+go 1.20
 
 require (
 	github.com/go-openapi/errors v0.20.4
