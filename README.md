@@ -1,5 +1,8 @@
 # atlar-v1-go-client
-Generated Go client for the Atlar API v1
+
+This project is not affiliated with, maintained or supported by Atlar AB.
+
+Generated Go client for the Atlar API v1.
 
 This client has been generated using the following command
 
