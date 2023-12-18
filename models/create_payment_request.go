@@ -8,6 +8,7 @@ package models
 import (
 	"context"
 	"encoding/json"
+	"strconv"
 
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/strfmt"
@@ -61,6 +62,10 @@ type CreatePaymentRequest struct {
 	// Enum: [SCT SCT_INST GB_CT_BACS GB_CT_FPS SE_A2A SE_GIRO DK_A2A DK_CT_SAMEDAY DK_CT_INST CH_CT CROSS_BORDER]
 	PaymentSchemeType *string `json:"paymentSchemeType"`
 
+	// RegulatoryReporting is an optional field that can be set when additional
+	// information is needed due to regulatory and statutory requirements.
+	RegulatoryReporting []*RegulatoryReportingDetail `json:"regulatoryReporting"`
+
 	// remittance information
 	// Required: true
 	RemittanceInformation *RemittanceInformation `json:"remittanceInformation"`
@@ -96,6 +101,10 @@ func (m *CreatePaymentRequest) Validate(formats strfmt.Registry) error {
 	}
 
 	if err := m.validatePaymentSchemeType(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.validateRegulatoryReporting(formats); err != nil {
 		res = append(res, err)
 	}
 
@@ -285,6 +294,32 @@ func (m *CreatePaymentRequest) validatePaymentSchemeType(formats strfmt.Registry
 	return nil
 }
 
+func (m *CreatePaymentRequest) validateRegulatoryReporting(formats strfmt.Registry) error {
+	if swag.IsZero(m.RegulatoryReporting) { // not required
+		return nil
+	}
+
+	for i := 0; i < len(m.RegulatoryReporting); i++ {
+		if swag.IsZero(m.RegulatoryReporting[i]) { // not required
+			continue
+		}
+
+		if m.RegulatoryReporting[i] != nil {
+			if err := m.RegulatoryReporting[i].Validate(formats); err != nil {
+				if ve, ok := err.(*errors.Validation); ok {
+					return ve.ValidateName("regulatoryReporting" + "." + strconv.Itoa(i))
+				} else if ce, ok := err.(*errors.CompositeError); ok {
+					return ce.ValidateName("regulatoryReporting" + "." + strconv.Itoa(i))
+				}
+				return err
+			}
+		}
+
+	}
+
+	return nil
+}
+
 func (m *CreatePaymentRequest) validateRemittanceInformation(formats strfmt.Registry) error {
 
 	if err := validate.Required("remittanceInformation", "body", m.RemittanceInformation); err != nil {
@@ -323,6 +358,10 @@ func (m *CreatePaymentRequest) ContextValidate(ctx context.Context, formats strf
 	}
 
 	if err := m.contextValidateExternalMetadata(ctx, formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.contextValidateRegulatoryReporting(ctx, formats); err != nil {
 		res = append(res, err)
 	}
 
@@ -366,6 +405,31 @@ func (m *CreatePaymentRequest) contextValidateExternalMetadata(ctx context.Conte
 			return ce.ValidateName("externalMetadata")
 		}
 		return err
+	}
+
+	return nil
+}
+
+func (m *CreatePaymentRequest) contextValidateRegulatoryReporting(ctx context.Context, formats strfmt.Registry) error {
+
+	for i := 0; i < len(m.RegulatoryReporting); i++ {
+
+		if m.RegulatoryReporting[i] != nil {
+
+			if swag.IsZero(m.RegulatoryReporting[i]) { // not required
+				return nil
+			}
+
+			if err := m.RegulatoryReporting[i].ContextValidate(ctx, formats); err != nil {
+				if ve, ok := err.(*errors.Validation); ok {
+					return ve.ValidateName("regulatoryReporting" + "." + strconv.Itoa(i))
+				} else if ce, ok := err.(*errors.CompositeError); ok {
+					return ce.ValidateName("regulatoryReporting" + "." + strconv.Itoa(i))
+				}
+				return err
+			}
+		}
+
 	}
 
 	return nil

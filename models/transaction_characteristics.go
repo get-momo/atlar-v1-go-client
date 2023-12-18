@@ -32,6 +32,9 @@ type TransactionCharacteristics struct {
 
 	// Whether or not the transaction is considered a return or reversal.
 	Returned bool `json:"returned,omitempty"`
+
+	// Optional. If virtual account details are provided by the bank they will be present here.
+	VirtualAccount *TransactionVirtualAccount `json:"virtualAccount,omitempty"`
 }
 
 // Validate validates this transaction characteristics
@@ -51,6 +54,10 @@ func (m *TransactionCharacteristics) Validate(formats strfmt.Registry) error {
 	}
 
 	if err := m.validateReturnReason(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.validateVirtualAccount(formats); err != nil {
 		res = append(res, err)
 	}
 
@@ -136,6 +143,25 @@ func (m *TransactionCharacteristics) validateReturnReason(formats strfmt.Registr
 	return nil
 }
 
+func (m *TransactionCharacteristics) validateVirtualAccount(formats strfmt.Registry) error {
+	if swag.IsZero(m.VirtualAccount) { // not required
+		return nil
+	}
+
+	if m.VirtualAccount != nil {
+		if err := m.VirtualAccount.Validate(formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("virtualAccount")
+			} else if ce, ok := err.(*errors.CompositeError); ok {
+				return ce.ValidateName("virtualAccount")
+			}
+			return err
+		}
+	}
+
+	return nil
+}
+
 // ContextValidate validate this transaction characteristics based on the context it is used
 func (m *TransactionCharacteristics) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
 	var res []error
@@ -153,6 +179,10 @@ func (m *TransactionCharacteristics) ContextValidate(ctx context.Context, format
 	}
 
 	if err := m.contextValidateReturnReason(ctx, formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.contextValidateVirtualAccount(ctx, formats); err != nil {
 		res = append(res, err)
 	}
 
@@ -238,6 +268,27 @@ func (m *TransactionCharacteristics) contextValidateReturnReason(ctx context.Con
 				return ve.ValidateName("returnReason")
 			} else if ce, ok := err.(*errors.CompositeError); ok {
 				return ce.ValidateName("returnReason")
+			}
+			return err
+		}
+	}
+
+	return nil
+}
+
+func (m *TransactionCharacteristics) contextValidateVirtualAccount(ctx context.Context, formats strfmt.Registry) error {
+
+	if m.VirtualAccount != nil {
+
+		if swag.IsZero(m.VirtualAccount) { // not required
+			return nil
+		}
+
+		if err := m.VirtualAccount.ContextValidate(ctx, formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("virtualAccount")
+			} else if ce, ok := err.(*errors.CompositeError); ok {
+				return ce.ValidateName("virtualAccount")
 			}
 			return err
 		}

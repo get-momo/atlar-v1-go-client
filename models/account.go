@@ -70,6 +70,9 @@ type Account struct {
 	// owner
 	Owner *PartyIdentification `json:"owner,omitempty"`
 
+	// ID of the associated third-party, e.g. the bank in which the account is held.
+	ThirdPartyID string `json:"thirdPartyId,omitempty"`
+
 	// updated
 	// Example: 2022-05-04T18:31:12.889104898Z
 	Updated string `json:"updated,omitempty"`

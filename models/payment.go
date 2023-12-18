@@ -76,13 +76,16 @@ type Payment struct {
 	OrganizationID string `json:"organizationId,omitempty"`
 
 	// payment scheme
-	PaymentScheme *PaymentScheme `json:"paymentScheme,omitempty"`
+	PaymentScheme *DeprecatedCreditTransferScheme `json:"paymentScheme,omitempty"`
 
 	// payment scheme type
 	PaymentSchemeType string `json:"paymentSchemeType,omitempty"`
 
 	// reconciliation
 	Reconciliation *ReconciliationDetails `json:"reconciliation,omitempty"`
+
+	// regulatory reporting
+	RegulatoryReporting []*RegulatoryReportingDetail `json:"regulatoryReporting"`
 
 	// remittance information
 	RemittanceInformation *RemittanceInformation `json:"remittanceInformation,omitempty"`
@@ -137,6 +140,10 @@ func (m *Payment) Validate(formats strfmt.Registry) error {
 	}
 
 	if err := m.validateReconciliation(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.validateRegulatoryReporting(formats); err != nil {
 		res = append(res, err)
 	}
 
@@ -362,6 +369,32 @@ func (m *Payment) validateReconciliation(formats strfmt.Registry) error {
 	return nil
 }
 
+func (m *Payment) validateRegulatoryReporting(formats strfmt.Registry) error {
+	if swag.IsZero(m.RegulatoryReporting) { // not required
+		return nil
+	}
+
+	for i := 0; i < len(m.RegulatoryReporting); i++ {
+		if swag.IsZero(m.RegulatoryReporting[i]) { // not required
+			continue
+		}
+
+		if m.RegulatoryReporting[i] != nil {
+			if err := m.RegulatoryReporting[i].Validate(formats); err != nil {
+				if ve, ok := err.(*errors.Validation); ok {
+					return ve.ValidateName("regulatoryReporting" + "." + strconv.Itoa(i))
+				} else if ce, ok := err.(*errors.CompositeError); ok {
+					return ce.ValidateName("regulatoryReporting" + "." + strconv.Itoa(i))
+				}
+				return err
+			}
+		}
+
+	}
+
+	return nil
+}
+
 func (m *Payment) validateRemittanceInformation(formats strfmt.Registry) error {
 	if swag.IsZero(m.RemittanceInformation) { // not required
 		return nil
@@ -502,6 +535,10 @@ func (m *Payment) ContextValidate(ctx context.Context, formats strfmt.Registry) 
 	}
 
 	if err := m.contextValidateReconciliation(ctx, formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.contextValidateRegulatoryReporting(ctx, formats); err != nil {
 		res = append(res, err)
 	}
 
@@ -683,6 +720,31 @@ func (m *Payment) contextValidateReconciliation(ctx context.Context, formats str
 			}
 			return err
 		}
+	}
+
+	return nil
+}
+
+func (m *Payment) contextValidateRegulatoryReporting(ctx context.Context, formats strfmt.Registry) error {
+
+	for i := 0; i < len(m.RegulatoryReporting); i++ {
+
+		if m.RegulatoryReporting[i] != nil {
+
+			if swag.IsZero(m.RegulatoryReporting[i]) { // not required
+				return nil
+			}
+
+			if err := m.RegulatoryReporting[i].ContextValidate(ctx, formats); err != nil {
+				if ve, ok := err.(*errors.Validation); ok {
+					return ve.ValidateName("regulatoryReporting" + "." + strconv.Itoa(i))
+				} else if ce, ok := err.(*errors.CompositeError); ok {
+					return ce.ValidateName("regulatoryReporting" + "." + strconv.Itoa(i))
+				}
+				return err
+			}
+		}
+
 	}
 
 	return nil

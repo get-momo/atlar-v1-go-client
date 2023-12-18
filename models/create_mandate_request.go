@@ -53,7 +53,7 @@ type CreateMandateRequest struct {
 	// Any external metadata you want to attach, such as your own internal IDs.
 	ExternalMetadata ExternalMetadata `json:"externalMetadata,omitempty"`
 
-	// A unique reference to the mandate that you have signed with the debtor. For `AUTOGIRO` this is used as payer number associated with the mandate and validated as 1-16 digits.
+	// A unique reference to the mandate that you have signed with the debtor. For `AUTOGIRO` this is used as payer number associated with the mandate and validated as 1-16 digits. For `AUTOGIRO`, this reference cannot contain leading 0's.
 	// Example: mandate_id_123
 	// Required: true
 	// Max Length: 35

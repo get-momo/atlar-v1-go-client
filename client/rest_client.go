@@ -17,6 +17,7 @@ import (
 	"github.com/get-momo/atlar-v1-go-client/client/expected_transactions"
 	"github.com/get-momo/atlar-v1-go-client/client/external_accounts"
 	"github.com/get-momo/atlar-v1-go-client/client/mandates"
+	"github.com/get-momo/atlar-v1-go-client/client/third_parties"
 	"github.com/get-momo/atlar-v1-go-client/client/transactions"
 	"github.com/get-momo/atlar-v1-go-client/client/webhooks"
 )
@@ -70,6 +71,7 @@ func New(transport runtime.ClientTransport, formats strfmt.Registry) *Rest {
 	cli.ExpectedTransactions = expected_transactions.New(transport, formats)
 	cli.ExternalAccounts = external_accounts.New(transport, formats)
 	cli.Mandates = mandates.New(transport, formats)
+	cli.ThirdParties = third_parties.New(transport, formats)
 	cli.Transactions = transactions.New(transport, formats)
 	cli.Webhooks = webhooks.New(transport, formats)
 	return cli
@@ -130,6 +132,8 @@ type Rest struct {
 
 	Mandates mandates.ClientService
 
+	ThirdParties third_parties.ClientService
+
 	Transactions transactions.ClientService
 
 	Webhooks webhooks.ClientService
@@ -147,6 +151,7 @@ func (c *Rest) SetTransport(transport runtime.ClientTransport) {
 	c.ExpectedTransactions.SetTransport(transport)
 	c.ExternalAccounts.SetTransport(transport)
 	c.Mandates.SetTransport(transport)
+	c.ThirdParties.SetTransport(transport)
 	c.Transactions.SetTransport(transport)
 	c.Webhooks.SetTransport(transport)
 }
