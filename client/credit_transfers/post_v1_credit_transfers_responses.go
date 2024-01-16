@@ -8,6 +8,7 @@ package credit_transfers
 import (
 	"fmt"
 	"io"
+	"strings"
 
 	"github.com/go-openapi/runtime"
 	"github.com/go-openapi/strfmt"
@@ -30,7 +31,10 @@ func (o *PostV1CreditTransfersReader) ReadResponse(response runtime.ClientRespon
 		}
 		return result, nil
 	default:
-		return nil, runtime.NewAPIError("[POST /v1/credit-transfers] PostV1CreditTransfers", response, response.Code())
+		buf := new(strings.Builder)
+		_, err := io.Copy(buf, response.Body())
+		if err != nil {return nil, err;}
+		return nil, runtime.NewAPIError("[POST /v1/credit-transfers] PostV1CreditTransfers", buf.String(), response.Code())
 	}
 }
 
