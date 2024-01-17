@@ -29,6 +29,12 @@ func (o *PostV1DirectDebitsReader) ReadResponse(response runtime.ClientResponse,
 			return nil, err
 		}
 		return result, nil
+	case 400:
+		result := NewPostV1DirectDebitsBadRequest()
+		if err := result.readResponse(response, consumer, o.formats); err != nil {
+			return nil, err
+		}
+		return nil, result
 	default:
 		return nil, runtime.NewAPIError("[POST /v1/direct-debits] PostV1DirectDebits", response, response.Code())
 	}
@@ -93,6 +99,74 @@ func (o *PostV1DirectDebitsCreated) GetPayload() *models.DirectDebit {
 func (o *PostV1DirectDebitsCreated) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	o.Payload = new(models.DirectDebit)
+
+	// response payload
+	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
+		return err
+	}
+
+	return nil
+}
+
+// NewPostV1DirectDebitsBadRequest creates a PostV1DirectDebitsBadRequest with default headers values
+func NewPostV1DirectDebitsBadRequest() *PostV1DirectDebitsBadRequest {
+	return &PostV1DirectDebitsBadRequest{}
+}
+
+/*
+PostV1DirectDebitsBadRequest describes a response with status code 400, with default header values.
+
+Bad request
+*/
+type PostV1DirectDebitsBadRequest struct {
+	Payload *models.ErrorResponse
+}
+
+// IsSuccess returns true when this post v1 direct debits bad request response has a 2xx status code
+func (o *PostV1DirectDebitsBadRequest) IsSuccess() bool {
+	return false
+}
+
+// IsRedirect returns true when this post v1 direct debits bad request response has a 3xx status code
+func (o *PostV1DirectDebitsBadRequest) IsRedirect() bool {
+	return false
+}
+
+// IsClientError returns true when this post v1 direct debits bad request response has a 4xx status code
+func (o *PostV1DirectDebitsBadRequest) IsClientError() bool {
+	return true
+}
+
+// IsServerError returns true when this post v1 direct debits bad request response has a 5xx status code
+func (o *PostV1DirectDebitsBadRequest) IsServerError() bool {
+	return false
+}
+
+// IsCode returns true when this post v1 direct debits bad request response a status code equal to that given
+func (o *PostV1DirectDebitsBadRequest) IsCode(code int) bool {
+	return code == 400
+}
+
+// Code gets the status code for the post v1 direct debits bad request response
+func (o *PostV1DirectDebitsBadRequest) Code() int {
+	return 400
+}
+
+func (o *PostV1DirectDebitsBadRequest) Error() string {
+	return fmt.Sprintf("[POST /v1/direct-debits][%d] postV1DirectDebitsBadRequest  %+v", 400, o.Payload)
+}
+
+func (o *PostV1DirectDebitsBadRequest) String() string {
+	return fmt.Sprintf("[POST /v1/direct-debits][%d] postV1DirectDebitsBadRequest  %+v", 400, o.Payload)
+}
+
+func (o *PostV1DirectDebitsBadRequest) GetPayload() *models.ErrorResponse {
+	return o.Payload
+}
+
+func (o *PostV1DirectDebitsBadRequest) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+
+	o.Payload = new(models.ErrorResponse)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {

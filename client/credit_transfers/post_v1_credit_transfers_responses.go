@@ -8,7 +8,6 @@ package credit_transfers
 import (
 	"fmt"
 	"io"
-	"strings"
 
 	"github.com/go-openapi/runtime"
 	"github.com/go-openapi/strfmt"
@@ -30,11 +29,14 @@ func (o *PostV1CreditTransfersReader) ReadResponse(response runtime.ClientRespon
 			return nil, err
 		}
 		return result, nil
+	case 400:
+		result := NewPostV1CreditTransfersBadRequest()
+		if err := result.readResponse(response, consumer, o.formats); err != nil {
+			return nil, err
+		}
+		return nil, result
 	default:
-		buf := new(strings.Builder)
-		_, err := io.Copy(buf, response.Body())
-		if err != nil {return nil, err;}
-		return nil, runtime.NewAPIError("[POST /v1/credit-transfers] PostV1CreditTransfers", buf.String(), response.Code())
+		return nil, runtime.NewAPIError("[POST /v1/credit-transfers] PostV1CreditTransfers", response, response.Code())
 	}
 }
 
@@ -97,6 +99,74 @@ func (o *PostV1CreditTransfersCreated) GetPayload() *models.Payment {
 func (o *PostV1CreditTransfersCreated) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	o.Payload = new(models.Payment)
+
+	// response payload
+	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
+		return err
+	}
+
+	return nil
+}
+
+// NewPostV1CreditTransfersBadRequest creates a PostV1CreditTransfersBadRequest with default headers values
+func NewPostV1CreditTransfersBadRequest() *PostV1CreditTransfersBadRequest {
+	return &PostV1CreditTransfersBadRequest{}
+}
+
+/*
+PostV1CreditTransfersBadRequest describes a response with status code 400, with default header values.
+
+Bad request
+*/
+type PostV1CreditTransfersBadRequest struct {
+	Payload *models.ErrorResponse
+}
+
+// IsSuccess returns true when this post v1 credit transfers bad request response has a 2xx status code
+func (o *PostV1CreditTransfersBadRequest) IsSuccess() bool {
+	return false
+}
+
+// IsRedirect returns true when this post v1 credit transfers bad request response has a 3xx status code
+func (o *PostV1CreditTransfersBadRequest) IsRedirect() bool {
+	return false
+}
+
+// IsClientError returns true when this post v1 credit transfers bad request response has a 4xx status code
+func (o *PostV1CreditTransfersBadRequest) IsClientError() bool {
+	return true
+}
+
+// IsServerError returns true when this post v1 credit transfers bad request response has a 5xx status code
+func (o *PostV1CreditTransfersBadRequest) IsServerError() bool {
+	return false
+}
+
+// IsCode returns true when this post v1 credit transfers bad request response a status code equal to that given
+func (o *PostV1CreditTransfersBadRequest) IsCode(code int) bool {
+	return code == 400
+}
+
+// Code gets the status code for the post v1 credit transfers bad request response
+func (o *PostV1CreditTransfersBadRequest) Code() int {
+	return 400
+}
+
+func (o *PostV1CreditTransfersBadRequest) Error() string {
+	return fmt.Sprintf("[POST /v1/credit-transfers][%d] postV1CreditTransfersBadRequest  %+v", 400, o.Payload)
+}
+
+func (o *PostV1CreditTransfersBadRequest) String() string {
+	return fmt.Sprintf("[POST /v1/credit-transfers][%d] postV1CreditTransfersBadRequest  %+v", 400, o.Payload)
+}
+
+func (o *PostV1CreditTransfersBadRequest) GetPayload() *models.ErrorResponse {
+	return o.Payload
+}
+
+func (o *PostV1CreditTransfersBadRequest) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+
+	o.Payload = new(models.ErrorResponse)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {

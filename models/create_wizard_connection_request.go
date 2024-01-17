@@ -19,6 +19,9 @@ type CreateWizardConnectionRequest struct {
 
 	// connection type Id
 	ConnectionTypeID string `json:"connectionTypeId,omitempty"`
+
+	// id
+	ID string `json:"id,omitempty"`
 }
 
 // Validate validates this create wizard connection request

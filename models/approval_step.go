@@ -17,6 +17,9 @@ import (
 // swagger:model ApprovalStep
 type ApprovalStep struct {
 
+	// Allow approval by the user creating this resource if if has the role required for this step. By default this is not allowed to conform with a four-eyes principle where approval by another person is required.
+	AllowCreatorApproval bool `json:"allowCreatorApproval,omitempty"`
+
 	// the Role that is required in order to approve/reject payments
 	RequiredApproverRoleID string `json:"requiredApproverRoleId,omitempty"`
 }

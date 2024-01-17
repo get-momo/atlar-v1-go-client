@@ -20,6 +20,9 @@ type CreateTransactionCharacteristics struct {
 
 	// bank transaction code
 	BankTransactionCode *BankTransactionCode `json:"bankTransactionCode,omitempty"`
+
+	// virtual account
+	VirtualAccount *TransactionVirtualAccount `json:"virtualAccount,omitempty"`
 }
 
 // Validate validates this create transaction characteristics
@@ -27,6 +30,10 @@ func (m *CreateTransactionCharacteristics) Validate(formats strfmt.Registry) err
 	var res []error
 
 	if err := m.validateBankTransactionCode(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.validateVirtualAccount(formats); err != nil {
 		res = append(res, err)
 	}
 
@@ -55,11 +62,34 @@ func (m *CreateTransactionCharacteristics) validateBankTransactionCode(formats s
 	return nil
 }
 
+func (m *CreateTransactionCharacteristics) validateVirtualAccount(formats strfmt.Registry) error {
+	if swag.IsZero(m.VirtualAccount) { // not required
+		return nil
+	}
+
+	if m.VirtualAccount != nil {
+		if err := m.VirtualAccount.Validate(formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("virtualAccount")
+			} else if ce, ok := err.(*errors.CompositeError); ok {
+				return ce.ValidateName("virtualAccount")
+			}
+			return err
+		}
+	}
+
+	return nil
+}
+
 // ContextValidate validate this create transaction characteristics based on the context it is used
 func (m *CreateTransactionCharacteristics) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
 	var res []error
 
 	if err := m.contextValidateBankTransactionCode(ctx, formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.contextValidateVirtualAccount(ctx, formats); err != nil {
 		res = append(res, err)
 	}
 
@@ -82,6 +112,27 @@ func (m *CreateTransactionCharacteristics) contextValidateBankTransactionCode(ct
 				return ve.ValidateName("bankTransactionCode")
 			} else if ce, ok := err.(*errors.CompositeError); ok {
 				return ce.ValidateName("bankTransactionCode")
+			}
+			return err
+		}
+	}
+
+	return nil
+}
+
+func (m *CreateTransactionCharacteristics) contextValidateVirtualAccount(ctx context.Context, formats strfmt.Registry) error {
+
+	if m.VirtualAccount != nil {
+
+		if swag.IsZero(m.VirtualAccount) { // not required
+			return nil
+		}
+
+		if err := m.VirtualAccount.ContextValidate(ctx, formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("virtualAccount")
+			} else if ce, ok := err.(*errors.CompositeError); ok {
+				return ce.ValidateName("virtualAccount")
 			}
 			return err
 		}

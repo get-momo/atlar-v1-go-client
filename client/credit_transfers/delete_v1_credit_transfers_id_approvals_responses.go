@@ -23,76 +23,150 @@ type DeleteV1CreditTransfersIDApprovalsReader struct {
 // ReadResponse reads a server response into the received o.
 func (o *DeleteV1CreditTransfersIDApprovalsReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
-	case 200:
-		result := NewDeleteV1CreditTransfersIDApprovalsOK()
+	case 202:
+		result := NewDeleteV1CreditTransfersIDApprovalsAccepted()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
+	case 400:
+		result := NewDeleteV1CreditTransfersIDApprovalsBadRequest()
+		if err := result.readResponse(response, consumer, o.formats); err != nil {
+			return nil, err
+		}
+		return nil, result
 	default:
 		return nil, runtime.NewAPIError("[DELETE /v1/credit-transfers/{id}/approvals] DeleteV1CreditTransfersIDApprovals", response, response.Code())
 	}
 }
 
-// NewDeleteV1CreditTransfersIDApprovalsOK creates a DeleteV1CreditTransfersIDApprovalsOK with default headers values
-func NewDeleteV1CreditTransfersIDApprovalsOK() *DeleteV1CreditTransfersIDApprovalsOK {
-	return &DeleteV1CreditTransfersIDApprovalsOK{}
+// NewDeleteV1CreditTransfersIDApprovalsAccepted creates a DeleteV1CreditTransfersIDApprovalsAccepted with default headers values
+func NewDeleteV1CreditTransfersIDApprovalsAccepted() *DeleteV1CreditTransfersIDApprovalsAccepted {
+	return &DeleteV1CreditTransfersIDApprovalsAccepted{}
 }
 
 /*
-DeleteV1CreditTransfersIDApprovalsOK describes a response with status code 200, with default header values.
+DeleteV1CreditTransfersIDApprovalsAccepted describes a response with status code 202, with default header values.
 
-the, now, rejected identified CreditTransfer
+The, now, rejected identified CreditTransfer
 */
-type DeleteV1CreditTransfersIDApprovalsOK struct {
+type DeleteV1CreditTransfersIDApprovalsAccepted struct {
 	Payload *models.Payment
 }
 
-// IsSuccess returns true when this delete v1 credit transfers Id approvals o k response has a 2xx status code
-func (o *DeleteV1CreditTransfersIDApprovalsOK) IsSuccess() bool {
+// IsSuccess returns true when this delete v1 credit transfers Id approvals accepted response has a 2xx status code
+func (o *DeleteV1CreditTransfersIDApprovalsAccepted) IsSuccess() bool {
 	return true
 }
 
-// IsRedirect returns true when this delete v1 credit transfers Id approvals o k response has a 3xx status code
-func (o *DeleteV1CreditTransfersIDApprovalsOK) IsRedirect() bool {
+// IsRedirect returns true when this delete v1 credit transfers Id approvals accepted response has a 3xx status code
+func (o *DeleteV1CreditTransfersIDApprovalsAccepted) IsRedirect() bool {
 	return false
 }
 
-// IsClientError returns true when this delete v1 credit transfers Id approvals o k response has a 4xx status code
-func (o *DeleteV1CreditTransfersIDApprovalsOK) IsClientError() bool {
+// IsClientError returns true when this delete v1 credit transfers Id approvals accepted response has a 4xx status code
+func (o *DeleteV1CreditTransfersIDApprovalsAccepted) IsClientError() bool {
 	return false
 }
 
-// IsServerError returns true when this delete v1 credit transfers Id approvals o k response has a 5xx status code
-func (o *DeleteV1CreditTransfersIDApprovalsOK) IsServerError() bool {
+// IsServerError returns true when this delete v1 credit transfers Id approvals accepted response has a 5xx status code
+func (o *DeleteV1CreditTransfersIDApprovalsAccepted) IsServerError() bool {
 	return false
 }
 
-// IsCode returns true when this delete v1 credit transfers Id approvals o k response a status code equal to that given
-func (o *DeleteV1CreditTransfersIDApprovalsOK) IsCode(code int) bool {
-	return code == 200
+// IsCode returns true when this delete v1 credit transfers Id approvals accepted response a status code equal to that given
+func (o *DeleteV1CreditTransfersIDApprovalsAccepted) IsCode(code int) bool {
+	return code == 202
 }
 
-// Code gets the status code for the delete v1 credit transfers Id approvals o k response
-func (o *DeleteV1CreditTransfersIDApprovalsOK) Code() int {
-	return 200
+// Code gets the status code for the delete v1 credit transfers Id approvals accepted response
+func (o *DeleteV1CreditTransfersIDApprovalsAccepted) Code() int {
+	return 202
 }
 
-func (o *DeleteV1CreditTransfersIDApprovalsOK) Error() string {
-	return fmt.Sprintf("[DELETE /v1/credit-transfers/{id}/approvals][%d] deleteV1CreditTransfersIdApprovalsOK  %+v", 200, o.Payload)
+func (o *DeleteV1CreditTransfersIDApprovalsAccepted) Error() string {
+	return fmt.Sprintf("[DELETE /v1/credit-transfers/{id}/approvals][%d] deleteV1CreditTransfersIdApprovalsAccepted  %+v", 202, o.Payload)
 }
 
-func (o *DeleteV1CreditTransfersIDApprovalsOK) String() string {
-	return fmt.Sprintf("[DELETE /v1/credit-transfers/{id}/approvals][%d] deleteV1CreditTransfersIdApprovalsOK  %+v", 200, o.Payload)
+func (o *DeleteV1CreditTransfersIDApprovalsAccepted) String() string {
+	return fmt.Sprintf("[DELETE /v1/credit-transfers/{id}/approvals][%d] deleteV1CreditTransfersIdApprovalsAccepted  %+v", 202, o.Payload)
 }
 
-func (o *DeleteV1CreditTransfersIDApprovalsOK) GetPayload() *models.Payment {
+func (o *DeleteV1CreditTransfersIDApprovalsAccepted) GetPayload() *models.Payment {
 	return o.Payload
 }
 
-func (o *DeleteV1CreditTransfersIDApprovalsOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+func (o *DeleteV1CreditTransfersIDApprovalsAccepted) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	o.Payload = new(models.Payment)
+
+	// response payload
+	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
+		return err
+	}
+
+	return nil
+}
+
+// NewDeleteV1CreditTransfersIDApprovalsBadRequest creates a DeleteV1CreditTransfersIDApprovalsBadRequest with default headers values
+func NewDeleteV1CreditTransfersIDApprovalsBadRequest() *DeleteV1CreditTransfersIDApprovalsBadRequest {
+	return &DeleteV1CreditTransfersIDApprovalsBadRequest{}
+}
+
+/*
+DeleteV1CreditTransfersIDApprovalsBadRequest describes a response with status code 400, with default header values.
+
+Bad request
+*/
+type DeleteV1CreditTransfersIDApprovalsBadRequest struct {
+	Payload *models.ErrorResponse
+}
+
+// IsSuccess returns true when this delete v1 credit transfers Id approvals bad request response has a 2xx status code
+func (o *DeleteV1CreditTransfersIDApprovalsBadRequest) IsSuccess() bool {
+	return false
+}
+
+// IsRedirect returns true when this delete v1 credit transfers Id approvals bad request response has a 3xx status code
+func (o *DeleteV1CreditTransfersIDApprovalsBadRequest) IsRedirect() bool {
+	return false
+}
+
+// IsClientError returns true when this delete v1 credit transfers Id approvals bad request response has a 4xx status code
+func (o *DeleteV1CreditTransfersIDApprovalsBadRequest) IsClientError() bool {
+	return true
+}
+
+// IsServerError returns true when this delete v1 credit transfers Id approvals bad request response has a 5xx status code
+func (o *DeleteV1CreditTransfersIDApprovalsBadRequest) IsServerError() bool {
+	return false
+}
+
+// IsCode returns true when this delete v1 credit transfers Id approvals bad request response a status code equal to that given
+func (o *DeleteV1CreditTransfersIDApprovalsBadRequest) IsCode(code int) bool {
+	return code == 400
+}
+
+// Code gets the status code for the delete v1 credit transfers Id approvals bad request response
+func (o *DeleteV1CreditTransfersIDApprovalsBadRequest) Code() int {
+	return 400
+}
+
+func (o *DeleteV1CreditTransfersIDApprovalsBadRequest) Error() string {
+	return fmt.Sprintf("[DELETE /v1/credit-transfers/{id}/approvals][%d] deleteV1CreditTransfersIdApprovalsBadRequest  %+v", 400, o.Payload)
+}
+
+func (o *DeleteV1CreditTransfersIDApprovalsBadRequest) String() string {
+	return fmt.Sprintf("[DELETE /v1/credit-transfers/{id}/approvals][%d] deleteV1CreditTransfersIdApprovalsBadRequest  %+v", 400, o.Payload)
+}
+
+func (o *DeleteV1CreditTransfersIDApprovalsBadRequest) GetPayload() *models.ErrorResponse {
+	return o.Payload
+}
+
+func (o *DeleteV1CreditTransfersIDApprovalsBadRequest) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+
+	o.Payload = new(models.ErrorResponse)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {

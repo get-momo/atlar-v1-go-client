@@ -33,6 +33,12 @@ func (o *GetV1CreditTransfersReader) ReadResponse(response runtime.ClientRespons
 			return nil, err
 		}
 		return result, nil
+	case 400:
+		result := NewGetV1CreditTransfersBadRequest()
+		if err := result.readResponse(response, consumer, o.formats); err != nil {
+			return nil, err
+		}
+		return nil, result
 	default:
 		return nil, runtime.NewAPIError("[GET /v1/credit-transfers] GetV1CreditTransfers", response, response.Code())
 	}
@@ -97,6 +103,74 @@ func (o *GetV1CreditTransfersOK) GetPayload() *GetV1CreditTransfersOKBody {
 func (o *GetV1CreditTransfersOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	o.Payload = new(GetV1CreditTransfersOKBody)
+
+	// response payload
+	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
+		return err
+	}
+
+	return nil
+}
+
+// NewGetV1CreditTransfersBadRequest creates a GetV1CreditTransfersBadRequest with default headers values
+func NewGetV1CreditTransfersBadRequest() *GetV1CreditTransfersBadRequest {
+	return &GetV1CreditTransfersBadRequest{}
+}
+
+/*
+GetV1CreditTransfersBadRequest describes a response with status code 400, with default header values.
+
+Bad request
+*/
+type GetV1CreditTransfersBadRequest struct {
+	Payload *models.ErrorResponse
+}
+
+// IsSuccess returns true when this get v1 credit transfers bad request response has a 2xx status code
+func (o *GetV1CreditTransfersBadRequest) IsSuccess() bool {
+	return false
+}
+
+// IsRedirect returns true when this get v1 credit transfers bad request response has a 3xx status code
+func (o *GetV1CreditTransfersBadRequest) IsRedirect() bool {
+	return false
+}
+
+// IsClientError returns true when this get v1 credit transfers bad request response has a 4xx status code
+func (o *GetV1CreditTransfersBadRequest) IsClientError() bool {
+	return true
+}
+
+// IsServerError returns true when this get v1 credit transfers bad request response has a 5xx status code
+func (o *GetV1CreditTransfersBadRequest) IsServerError() bool {
+	return false
+}
+
+// IsCode returns true when this get v1 credit transfers bad request response a status code equal to that given
+func (o *GetV1CreditTransfersBadRequest) IsCode(code int) bool {
+	return code == 400
+}
+
+// Code gets the status code for the get v1 credit transfers bad request response
+func (o *GetV1CreditTransfersBadRequest) Code() int {
+	return 400
+}
+
+func (o *GetV1CreditTransfersBadRequest) Error() string {
+	return fmt.Sprintf("[GET /v1/credit-transfers][%d] getV1CreditTransfersBadRequest  %+v", 400, o.Payload)
+}
+
+func (o *GetV1CreditTransfersBadRequest) String() string {
+	return fmt.Sprintf("[GET /v1/credit-transfers][%d] getV1CreditTransfersBadRequest  %+v", 400, o.Payload)
+}
+
+func (o *GetV1CreditTransfersBadRequest) GetPayload() *models.ErrorResponse {
+	return o.Payload
+}
+
+func (o *GetV1CreditTransfersBadRequest) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+
+	o.Payload = new(models.ErrorResponse)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {

@@ -29,6 +29,9 @@ type TestbankTransactionCharacteristics struct {
 
 	// ISO20022 Return Reasons
 	ReturnReason *TestbankReturnReason `json:"returnReason,omitempty"`
+
+	// virtual account
+	VirtualAccount *TestbankTransactionVirtualAccount `json:"virtualAccount,omitempty"`
 }
 
 // Validate validates this testbank transaction characteristics
@@ -48,6 +51,10 @@ func (m *TestbankTransactionCharacteristics) Validate(formats strfmt.Registry) e
 	}
 
 	if err := m.validateReturnReason(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.validateVirtualAccount(formats); err != nil {
 		res = append(res, err)
 	}
 
@@ -133,6 +140,25 @@ func (m *TestbankTransactionCharacteristics) validateReturnReason(formats strfmt
 	return nil
 }
 
+func (m *TestbankTransactionCharacteristics) validateVirtualAccount(formats strfmt.Registry) error {
+	if swag.IsZero(m.VirtualAccount) { // not required
+		return nil
+	}
+
+	if m.VirtualAccount != nil {
+		if err := m.VirtualAccount.Validate(formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("virtualAccount")
+			} else if ce, ok := err.(*errors.CompositeError); ok {
+				return ce.ValidateName("virtualAccount")
+			}
+			return err
+		}
+	}
+
+	return nil
+}
+
 // ContextValidate validate this testbank transaction characteristics based on the context it is used
 func (m *TestbankTransactionCharacteristics) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
 	var res []error
@@ -150,6 +176,10 @@ func (m *TestbankTransactionCharacteristics) ContextValidate(ctx context.Context
 	}
 
 	if err := m.contextValidateReturnReason(ctx, formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.contextValidateVirtualAccount(ctx, formats); err != nil {
 		res = append(res, err)
 	}
 
@@ -235,6 +265,27 @@ func (m *TestbankTransactionCharacteristics) contextValidateReturnReason(ctx con
 				return ve.ValidateName("returnReason")
 			} else if ce, ok := err.(*errors.CompositeError); ok {
 				return ce.ValidateName("returnReason")
+			}
+			return err
+		}
+	}
+
+	return nil
+}
+
+func (m *TestbankTransactionCharacteristics) contextValidateVirtualAccount(ctx context.Context, formats strfmt.Registry) error {
+
+	if m.VirtualAccount != nil {
+
+		if swag.IsZero(m.VirtualAccount) { // not required
+			return nil
+		}
+
+		if err := m.VirtualAccount.ContextValidate(ctx, formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("virtualAccount")
+			} else if ce, ok := err.(*errors.CompositeError); ok {
+				return ce.ValidateName("virtualAccount")
 			}
 			return err
 		}

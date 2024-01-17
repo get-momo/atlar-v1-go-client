@@ -29,6 +29,12 @@ func (o *PutV1AccountsIDReader) ReadResponse(response runtime.ClientResponse, co
 			return nil, err
 		}
 		return result, nil
+	case 400:
+		result := NewPutV1AccountsIDBadRequest()
+		if err := result.readResponse(response, consumer, o.formats); err != nil {
+			return nil, err
+		}
+		return nil, result
 	case 404:
 		result := NewPutV1AccountsIDNotFound()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -48,7 +54,7 @@ func NewPutV1AccountsIDOK() *PutV1AccountsIDOK {
 /*
 PutV1AccountsIDOK describes a response with status code 200, with default header values.
 
-desc
+The identified Account.
 */
 type PutV1AccountsIDOK struct {
 	Payload *models.Account
@@ -108,6 +114,74 @@ func (o *PutV1AccountsIDOK) readResponse(response runtime.ClientResponse, consum
 	return nil
 }
 
+// NewPutV1AccountsIDBadRequest creates a PutV1AccountsIDBadRequest with default headers values
+func NewPutV1AccountsIDBadRequest() *PutV1AccountsIDBadRequest {
+	return &PutV1AccountsIDBadRequest{}
+}
+
+/*
+PutV1AccountsIDBadRequest describes a response with status code 400, with default header values.
+
+Bad request
+*/
+type PutV1AccountsIDBadRequest struct {
+	Payload *models.ErrorResponse
+}
+
+// IsSuccess returns true when this put v1 accounts Id bad request response has a 2xx status code
+func (o *PutV1AccountsIDBadRequest) IsSuccess() bool {
+	return false
+}
+
+// IsRedirect returns true when this put v1 accounts Id bad request response has a 3xx status code
+func (o *PutV1AccountsIDBadRequest) IsRedirect() bool {
+	return false
+}
+
+// IsClientError returns true when this put v1 accounts Id bad request response has a 4xx status code
+func (o *PutV1AccountsIDBadRequest) IsClientError() bool {
+	return true
+}
+
+// IsServerError returns true when this put v1 accounts Id bad request response has a 5xx status code
+func (o *PutV1AccountsIDBadRequest) IsServerError() bool {
+	return false
+}
+
+// IsCode returns true when this put v1 accounts Id bad request response a status code equal to that given
+func (o *PutV1AccountsIDBadRequest) IsCode(code int) bool {
+	return code == 400
+}
+
+// Code gets the status code for the put v1 accounts Id bad request response
+func (o *PutV1AccountsIDBadRequest) Code() int {
+	return 400
+}
+
+func (o *PutV1AccountsIDBadRequest) Error() string {
+	return fmt.Sprintf("[PUT /v1/accounts/{id}][%d] putV1AccountsIdBadRequest  %+v", 400, o.Payload)
+}
+
+func (o *PutV1AccountsIDBadRequest) String() string {
+	return fmt.Sprintf("[PUT /v1/accounts/{id}][%d] putV1AccountsIdBadRequest  %+v", 400, o.Payload)
+}
+
+func (o *PutV1AccountsIDBadRequest) GetPayload() *models.ErrorResponse {
+	return o.Payload
+}
+
+func (o *PutV1AccountsIDBadRequest) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+
+	o.Payload = new(models.ErrorResponse)
+
+	// response payload
+	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
+		return err
+	}
+
+	return nil
+}
+
 // NewPutV1AccountsIDNotFound creates a PutV1AccountsIDNotFound with default headers values
 func NewPutV1AccountsIDNotFound() *PutV1AccountsIDNotFound {
 	return &PutV1AccountsIDNotFound{}
@@ -116,7 +190,7 @@ func NewPutV1AccountsIDNotFound() *PutV1AccountsIDNotFound {
 /*
 PutV1AccountsIDNotFound describes a response with status code 404, with default header values.
 
-identified account doesn't exist
+The identified Account doesn't exist.
 */
 type PutV1AccountsIDNotFound struct {
 	Payload string

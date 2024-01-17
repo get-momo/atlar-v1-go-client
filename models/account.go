@@ -42,6 +42,9 @@ type Account struct {
 	// Example: EUR
 	Currency string `json:"currency,omitempty"`
 
+	// external metadata
+	ExternalMetadata ExternalMetadata `json:"externalMetadata,omitempty"`
+
 	// fictive
 	// Example: true
 	Fictive bool `json:"fictive,omitempty"`
@@ -90,6 +93,10 @@ func (m *Account) Validate(formats strfmt.Registry) error {
 	}
 
 	if err := m.validateBank(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.validateExternalMetadata(formats); err != nil {
 		res = append(res, err)
 	}
 
@@ -145,6 +152,25 @@ func (m *Account) validateBank(formats strfmt.Registry) error {
 				return ve.ValidateName("bank")
 			} else if ce, ok := err.(*errors.CompositeError); ok {
 				return ce.ValidateName("bank")
+			}
+			return err
+		}
+	}
+
+	return nil
+}
+
+func (m *Account) validateExternalMetadata(formats strfmt.Registry) error {
+	if swag.IsZero(m.ExternalMetadata) { // not required
+		return nil
+	}
+
+	if m.ExternalMetadata != nil {
+		if err := m.ExternalMetadata.Validate(formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("externalMetadata")
+			} else if ce, ok := err.(*errors.CompositeError); ok {
+				return ce.ValidateName("externalMetadata")
 			}
 			return err
 		}
@@ -228,6 +254,10 @@ func (m *Account) ContextValidate(ctx context.Context, formats strfmt.Registry) 
 		res = append(res, err)
 	}
 
+	if err := m.contextValidateExternalMetadata(ctx, formats); err != nil {
+		res = append(res, err)
+	}
+
 	if err := m.contextValidateIdentifiers(ctx, formats); err != nil {
 		res = append(res, err)
 	}
@@ -279,6 +309,24 @@ func (m *Account) contextValidateBank(ctx context.Context, formats strfmt.Regist
 			}
 			return err
 		}
+	}
+
+	return nil
+}
+
+func (m *Account) contextValidateExternalMetadata(ctx context.Context, formats strfmt.Registry) error {
+
+	if swag.IsZero(m.ExternalMetadata) { // not required
+		return nil
+	}
+
+	if err := m.ExternalMetadata.ContextValidate(ctx, formats); err != nil {
+		if ve, ok := err.(*errors.Validation); ok {
+			return ve.ValidateName("externalMetadata")
+		} else if ce, ok := err.(*errors.CompositeError); ok {
+			return ce.ValidateName("externalMetadata")
+		}
+		return err
 	}
 
 	return nil

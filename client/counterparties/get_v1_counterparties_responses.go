@@ -33,6 +33,12 @@ func (o *GetV1CounterpartiesReader) ReadResponse(response runtime.ClientResponse
 			return nil, err
 		}
 		return result, nil
+	case 400:
+		result := NewGetV1CounterpartiesBadRequest()
+		if err := result.readResponse(response, consumer, o.formats); err != nil {
+			return nil, err
+		}
+		return nil, result
 	default:
 		return nil, runtime.NewAPIError("[GET /v1/counterparties] GetV1Counterparties", response, response.Code())
 	}
@@ -97,6 +103,74 @@ func (o *GetV1CounterpartiesOK) GetPayload() *GetV1CounterpartiesOKBody {
 func (o *GetV1CounterpartiesOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	o.Payload = new(GetV1CounterpartiesOKBody)
+
+	// response payload
+	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
+		return err
+	}
+
+	return nil
+}
+
+// NewGetV1CounterpartiesBadRequest creates a GetV1CounterpartiesBadRequest with default headers values
+func NewGetV1CounterpartiesBadRequest() *GetV1CounterpartiesBadRequest {
+	return &GetV1CounterpartiesBadRequest{}
+}
+
+/*
+GetV1CounterpartiesBadRequest describes a response with status code 400, with default header values.
+
+Bad request
+*/
+type GetV1CounterpartiesBadRequest struct {
+	Payload *models.ErrorResponse
+}
+
+// IsSuccess returns true when this get v1 counterparties bad request response has a 2xx status code
+func (o *GetV1CounterpartiesBadRequest) IsSuccess() bool {
+	return false
+}
+
+// IsRedirect returns true when this get v1 counterparties bad request response has a 3xx status code
+func (o *GetV1CounterpartiesBadRequest) IsRedirect() bool {
+	return false
+}
+
+// IsClientError returns true when this get v1 counterparties bad request response has a 4xx status code
+func (o *GetV1CounterpartiesBadRequest) IsClientError() bool {
+	return true
+}
+
+// IsServerError returns true when this get v1 counterparties bad request response has a 5xx status code
+func (o *GetV1CounterpartiesBadRequest) IsServerError() bool {
+	return false
+}
+
+// IsCode returns true when this get v1 counterparties bad request response a status code equal to that given
+func (o *GetV1CounterpartiesBadRequest) IsCode(code int) bool {
+	return code == 400
+}
+
+// Code gets the status code for the get v1 counterparties bad request response
+func (o *GetV1CounterpartiesBadRequest) Code() int {
+	return 400
+}
+
+func (o *GetV1CounterpartiesBadRequest) Error() string {
+	return fmt.Sprintf("[GET /v1/counterparties][%d] getV1CounterpartiesBadRequest  %+v", 400, o.Payload)
+}
+
+func (o *GetV1CounterpartiesBadRequest) String() string {
+	return fmt.Sprintf("[GET /v1/counterparties][%d] getV1CounterpartiesBadRequest  %+v", 400, o.Payload)
+}
+
+func (o *GetV1CounterpartiesBadRequest) GetPayload() *models.ErrorResponse {
+	return o.Payload
+}
+
+func (o *GetV1CounterpartiesBadRequest) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+
+	o.Payload = new(models.ErrorResponse)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {

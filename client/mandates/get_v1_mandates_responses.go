@@ -33,6 +33,12 @@ func (o *GetV1MandatesReader) ReadResponse(response runtime.ClientResponse, cons
 			return nil, err
 		}
 		return result, nil
+	case 400:
+		result := NewGetV1MandatesBadRequest()
+		if err := result.readResponse(response, consumer, o.formats); err != nil {
+			return nil, err
+		}
+		return nil, result
 	default:
 		return nil, runtime.NewAPIError("[GET /v1/mandates] GetV1Mandates", response, response.Code())
 	}
@@ -97,6 +103,74 @@ func (o *GetV1MandatesOK) GetPayload() *GetV1MandatesOKBody {
 func (o *GetV1MandatesOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	o.Payload = new(GetV1MandatesOKBody)
+
+	// response payload
+	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
+		return err
+	}
+
+	return nil
+}
+
+// NewGetV1MandatesBadRequest creates a GetV1MandatesBadRequest with default headers values
+func NewGetV1MandatesBadRequest() *GetV1MandatesBadRequest {
+	return &GetV1MandatesBadRequest{}
+}
+
+/*
+GetV1MandatesBadRequest describes a response with status code 400, with default header values.
+
+Bad request
+*/
+type GetV1MandatesBadRequest struct {
+	Payload *models.ErrorResponse
+}
+
+// IsSuccess returns true when this get v1 mandates bad request response has a 2xx status code
+func (o *GetV1MandatesBadRequest) IsSuccess() bool {
+	return false
+}
+
+// IsRedirect returns true when this get v1 mandates bad request response has a 3xx status code
+func (o *GetV1MandatesBadRequest) IsRedirect() bool {
+	return false
+}
+
+// IsClientError returns true when this get v1 mandates bad request response has a 4xx status code
+func (o *GetV1MandatesBadRequest) IsClientError() bool {
+	return true
+}
+
+// IsServerError returns true when this get v1 mandates bad request response has a 5xx status code
+func (o *GetV1MandatesBadRequest) IsServerError() bool {
+	return false
+}
+
+// IsCode returns true when this get v1 mandates bad request response a status code equal to that given
+func (o *GetV1MandatesBadRequest) IsCode(code int) bool {
+	return code == 400
+}
+
+// Code gets the status code for the get v1 mandates bad request response
+func (o *GetV1MandatesBadRequest) Code() int {
+	return 400
+}
+
+func (o *GetV1MandatesBadRequest) Error() string {
+	return fmt.Sprintf("[GET /v1/mandates][%d] getV1MandatesBadRequest  %+v", 400, o.Payload)
+}
+
+func (o *GetV1MandatesBadRequest) String() string {
+	return fmt.Sprintf("[GET /v1/mandates][%d] getV1MandatesBadRequest  %+v", 400, o.Payload)
+}
+
+func (o *GetV1MandatesBadRequest) GetPayload() *models.ErrorResponse {
+	return o.Payload
+}
+
+func (o *GetV1MandatesBadRequest) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+
+	o.Payload = new(models.ErrorResponse)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {

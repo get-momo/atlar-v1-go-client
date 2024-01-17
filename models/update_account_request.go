@@ -8,6 +8,7 @@ package models
 import (
 	"context"
 
+	"github.com/go-openapi/errors"
 	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
 )
@@ -19,15 +20,73 @@ type UpdateAccountRequest struct {
 
 	// alias
 	Alias string `json:"alias,omitempty"`
+
+	// external metadata
+	ExternalMetadata ExternalMetadata `json:"externalMetadata,omitempty"`
 }
 
 // Validate validates this update account request
 func (m *UpdateAccountRequest) Validate(formats strfmt.Registry) error {
+	var res []error
+
+	if err := m.validateExternalMetadata(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if len(res) > 0 {
+		return errors.CompositeValidationError(res...)
+	}
 	return nil
 }
 
-// ContextValidate validates this update account request based on context it is used
+func (m *UpdateAccountRequest) validateExternalMetadata(formats strfmt.Registry) error {
+	if swag.IsZero(m.ExternalMetadata) { // not required
+		return nil
+	}
+
+	if m.ExternalMetadata != nil {
+		if err := m.ExternalMetadata.Validate(formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("externalMetadata")
+			} else if ce, ok := err.(*errors.CompositeError); ok {
+				return ce.ValidateName("externalMetadata")
+			}
+			return err
+		}
+	}
+
+	return nil
+}
+
+// ContextValidate validate this update account request based on the context it is used
 func (m *UpdateAccountRequest) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
+	var res []error
+
+	if err := m.contextValidateExternalMetadata(ctx, formats); err != nil {
+		res = append(res, err)
+	}
+
+	if len(res) > 0 {
+		return errors.CompositeValidationError(res...)
+	}
+	return nil
+}
+
+func (m *UpdateAccountRequest) contextValidateExternalMetadata(ctx context.Context, formats strfmt.Registry) error {
+
+	if swag.IsZero(m.ExternalMetadata) { // not required
+		return nil
+	}
+
+	if err := m.ExternalMetadata.ContextValidate(ctx, formats); err != nil {
+		if ve, ok := err.(*errors.Validation); ok {
+			return ve.ValidateName("externalMetadata")
+		} else if ce, ok := err.(*errors.CompositeError); ok {
+			return ce.ValidateName("externalMetadata")
+		}
+		return err
+	}
+
 	return nil
 }
 

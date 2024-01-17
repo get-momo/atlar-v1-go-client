@@ -56,7 +56,7 @@ type CreatePaymentRequest struct {
 	// external metadata
 	ExternalMetadata ExternalMetadata `json:"externalMetadata,omitempty"`
 
-	// The payment scheme that is desired. Choose among SCT (SEPA Credit Transfer), SCT_INST (SEPA Instant Credit Transfer), GB_CT_BACS (UK account-to-account BACS), GB_CT_FPS (UK account-to-account Faster Payments), SE_A2A (Swedish account-to-account), SE_GIRO (Swedish Bank/Plus-giro), DK_A2A (Danish account-to-account), DK_CT_SAMEDAY (Danish same-day credit transfer), DK_CT_INST (Danish instant credit transfer),  CROSS_BORDER (swift).
+	// The payment scheme that is desired. Choose among SCT (SEPA Credit Transfer), SCT_INST (SEPA Instant Credit Transfer), GB_CT_BACS (UK account-to-account BACS), GB_CT_FPS (UK account-to-account Faster Payments), SE_A2A (Swedish account-to-account), SE_GIRO (Swedish Bank/Plus-giro), DK_A2A (Danish account-to-account), DK_CT_SAMEDAY (Danish same-day credit transfer), DK_CT_INST (Danish instant credit transfer), NO_CT (Norwegian credit transfer), CROSS_BORDER (swift).
 	// Example: SCT
 	// Required: true
 	// Enum: [SCT SCT_INST GB_CT_BACS GB_CT_FPS SE_A2A SE_GIRO DK_A2A DK_CT_SAMEDAY DK_CT_INST CH_CT CROSS_BORDER]

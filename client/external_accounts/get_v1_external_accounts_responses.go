@@ -33,6 +33,12 @@ func (o *GetV1ExternalAccountsReader) ReadResponse(response runtime.ClientRespon
 			return nil, err
 		}
 		return result, nil
+	case 400:
+		result := NewGetV1ExternalAccountsBadRequest()
+		if err := result.readResponse(response, consumer, o.formats); err != nil {
+			return nil, err
+		}
+		return nil, result
 	default:
 		return nil, runtime.NewAPIError("[GET /v1/external-accounts] GetV1ExternalAccounts", response, response.Code())
 	}
@@ -97,6 +103,74 @@ func (o *GetV1ExternalAccountsOK) GetPayload() *GetV1ExternalAccountsOKBody {
 func (o *GetV1ExternalAccountsOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	o.Payload = new(GetV1ExternalAccountsOKBody)
+
+	// response payload
+	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
+		return err
+	}
+
+	return nil
+}
+
+// NewGetV1ExternalAccountsBadRequest creates a GetV1ExternalAccountsBadRequest with default headers values
+func NewGetV1ExternalAccountsBadRequest() *GetV1ExternalAccountsBadRequest {
+	return &GetV1ExternalAccountsBadRequest{}
+}
+
+/*
+GetV1ExternalAccountsBadRequest describes a response with status code 400, with default header values.
+
+Bad request
+*/
+type GetV1ExternalAccountsBadRequest struct {
+	Payload *models.ErrorResponse
+}
+
+// IsSuccess returns true when this get v1 external accounts bad request response has a 2xx status code
+func (o *GetV1ExternalAccountsBadRequest) IsSuccess() bool {
+	return false
+}
+
+// IsRedirect returns true when this get v1 external accounts bad request response has a 3xx status code
+func (o *GetV1ExternalAccountsBadRequest) IsRedirect() bool {
+	return false
+}
+
+// IsClientError returns true when this get v1 external accounts bad request response has a 4xx status code
+func (o *GetV1ExternalAccountsBadRequest) IsClientError() bool {
+	return true
+}
+
+// IsServerError returns true when this get v1 external accounts bad request response has a 5xx status code
+func (o *GetV1ExternalAccountsBadRequest) IsServerError() bool {
+	return false
+}
+
+// IsCode returns true when this get v1 external accounts bad request response a status code equal to that given
+func (o *GetV1ExternalAccountsBadRequest) IsCode(code int) bool {
+	return code == 400
+}
+
+// Code gets the status code for the get v1 external accounts bad request response
+func (o *GetV1ExternalAccountsBadRequest) Code() int {
+	return 400
+}
+
+func (o *GetV1ExternalAccountsBadRequest) Error() string {
+	return fmt.Sprintf("[GET /v1/external-accounts][%d] getV1ExternalAccountsBadRequest  %+v", 400, o.Payload)
+}
+
+func (o *GetV1ExternalAccountsBadRequest) String() string {
+	return fmt.Sprintf("[GET /v1/external-accounts][%d] getV1ExternalAccountsBadRequest  %+v", 400, o.Payload)
+}
+
+func (o *GetV1ExternalAccountsBadRequest) GetPayload() *models.ErrorResponse {
+	return o.Payload
+}
+
+func (o *GetV1ExternalAccountsBadRequest) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+
+	o.Payload = new(models.ErrorResponse)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {

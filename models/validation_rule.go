@@ -12,7 +12,7 @@ import (
 	"github.com/go-openapi/swag"
 )
 
-// ValidationRule A MetadataKey represents a key that can be used in an ExternalMetadata field when for instance creating transfers or direct-debits.
+// ValidationRule A validation rule applies rules to the affected resource.
 //
 // swagger:model ValidationRule
 type ValidationRule struct {
@@ -20,6 +20,10 @@ type ValidationRule struct {
 	// affected resource
 	// Example: direct_debits
 	AffectedResource string `json:"affectedResource,omitempty"`
+
+	// allowed values
+	// Example: ["value1","value2","value3"]
+	AllowedValues []string `json:"allowedValues"`
 
 	// required
 	// Example: true

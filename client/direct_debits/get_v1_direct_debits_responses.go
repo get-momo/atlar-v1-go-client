@@ -33,6 +33,12 @@ func (o *GetV1DirectDebitsReader) ReadResponse(response runtime.ClientResponse, 
 			return nil, err
 		}
 		return result, nil
+	case 400:
+		result := NewGetV1DirectDebitsBadRequest()
+		if err := result.readResponse(response, consumer, o.formats); err != nil {
+			return nil, err
+		}
+		return nil, result
 	default:
 		return nil, runtime.NewAPIError("[GET /v1/direct-debits] GetV1DirectDebits", response, response.Code())
 	}
@@ -97,6 +103,74 @@ func (o *GetV1DirectDebitsOK) GetPayload() *GetV1DirectDebitsOKBody {
 func (o *GetV1DirectDebitsOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	o.Payload = new(GetV1DirectDebitsOKBody)
+
+	// response payload
+	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
+		return err
+	}
+
+	return nil
+}
+
+// NewGetV1DirectDebitsBadRequest creates a GetV1DirectDebitsBadRequest with default headers values
+func NewGetV1DirectDebitsBadRequest() *GetV1DirectDebitsBadRequest {
+	return &GetV1DirectDebitsBadRequest{}
+}
+
+/*
+GetV1DirectDebitsBadRequest describes a response with status code 400, with default header values.
+
+Bad request
+*/
+type GetV1DirectDebitsBadRequest struct {
+	Payload *models.ErrorResponse
+}
+
+// IsSuccess returns true when this get v1 direct debits bad request response has a 2xx status code
+func (o *GetV1DirectDebitsBadRequest) IsSuccess() bool {
+	return false
+}
+
+// IsRedirect returns true when this get v1 direct debits bad request response has a 3xx status code
+func (o *GetV1DirectDebitsBadRequest) IsRedirect() bool {
+	return false
+}
+
+// IsClientError returns true when this get v1 direct debits bad request response has a 4xx status code
+func (o *GetV1DirectDebitsBadRequest) IsClientError() bool {
+	return true
+}
+
+// IsServerError returns true when this get v1 direct debits bad request response has a 5xx status code
+func (o *GetV1DirectDebitsBadRequest) IsServerError() bool {
+	return false
+}
+
+// IsCode returns true when this get v1 direct debits bad request response a status code equal to that given
+func (o *GetV1DirectDebitsBadRequest) IsCode(code int) bool {
+	return code == 400
+}
+
+// Code gets the status code for the get v1 direct debits bad request response
+func (o *GetV1DirectDebitsBadRequest) Code() int {
+	return 400
+}
+
+func (o *GetV1DirectDebitsBadRequest) Error() string {
+	return fmt.Sprintf("[GET /v1/direct-debits][%d] getV1DirectDebitsBadRequest  %+v", 400, o.Payload)
+}
+
+func (o *GetV1DirectDebitsBadRequest) String() string {
+	return fmt.Sprintf("[GET /v1/direct-debits][%d] getV1DirectDebitsBadRequest  %+v", 400, o.Payload)
+}
+
+func (o *GetV1DirectDebitsBadRequest) GetPayload() *models.ErrorResponse {
+	return o.Payload
+}
+
+func (o *GetV1DirectDebitsBadRequest) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+
+	o.Payload = new(models.ErrorResponse)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {

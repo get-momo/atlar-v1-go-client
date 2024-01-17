@@ -30,7 +30,7 @@ type ClientOption func(*runtime.ClientOperation)
 
 // ClientService is the interface for Client methods
 type ClientService interface {
-	DeleteV1CreditTransfersIDApprovals(params *DeleteV1CreditTransfersIDApprovalsParams, opts ...ClientOption) (*DeleteV1CreditTransfersIDApprovalsOK, error)
+	DeleteV1CreditTransfersIDApprovals(params *DeleteV1CreditTransfersIDApprovalsParams, opts ...ClientOption) (*DeleteV1CreditTransfersIDApprovalsAccepted, error)
 
 	GetV1CreditTransfers(params *GetV1CreditTransfersParams, opts ...ClientOption) (*GetV1CreditTransfersOK, error)
 
@@ -42,7 +42,7 @@ type ClientService interface {
 
 	PostV1CreditTransfers(params *PostV1CreditTransfersParams, opts ...ClientOption) (*PostV1CreditTransfersCreated, error)
 
-	PutV1CreditTransfersIDApprovalsApprovalStepID(params *PutV1CreditTransfersIDApprovalsApprovalStepIDParams, opts ...ClientOption) (*PutV1CreditTransfersIDApprovalsApprovalStepIDOK, error)
+	PutV1CreditTransfersIDApprovalsApprovalStepID(params *PutV1CreditTransfersIDApprovalsApprovalStepIDParams, opts ...ClientOption) (*PutV1CreditTransfersIDApprovalsApprovalStepIDAccepted, error)
 
 	SetTransport(transport runtime.ClientTransport)
 }
@@ -52,7 +52,7 @@ DeleteV1CreditTransfersIDApprovals rejects credit transfer
 
 Reject the identified CreditTransfer. One can use this endpoint with or without having a prior created Approval.
 */
-func (a *Client) DeleteV1CreditTransfersIDApprovals(params *DeleteV1CreditTransfersIDApprovalsParams, opts ...ClientOption) (*DeleteV1CreditTransfersIDApprovalsOK, error) {
+func (a *Client) DeleteV1CreditTransfersIDApprovals(params *DeleteV1CreditTransfersIDApprovalsParams, opts ...ClientOption) (*DeleteV1CreditTransfersIDApprovalsAccepted, error) {
 	// TODO: Validate the params before sending
 	if params == nil {
 		params = NewDeleteV1CreditTransfersIDApprovalsParams()
@@ -77,7 +77,7 @@ func (a *Client) DeleteV1CreditTransfersIDApprovals(params *DeleteV1CreditTransf
 	if err != nil {
 		return nil, err
 	}
-	success, ok := result.(*DeleteV1CreditTransfersIDApprovalsOK)
+	success, ok := result.(*DeleteV1CreditTransfersIDApprovalsAccepted)
 	if ok {
 		return success, nil
 	}
@@ -294,7 +294,7 @@ PutV1CreditTransfersIDApprovalsApprovalStepID approves credit transfer
 
 Approve the identified CreditTransfer
 */
-func (a *Client) PutV1CreditTransfersIDApprovalsApprovalStepID(params *PutV1CreditTransfersIDApprovalsApprovalStepIDParams, opts ...ClientOption) (*PutV1CreditTransfersIDApprovalsApprovalStepIDOK, error) {
+func (a *Client) PutV1CreditTransfersIDApprovalsApprovalStepID(params *PutV1CreditTransfersIDApprovalsApprovalStepIDParams, opts ...ClientOption) (*PutV1CreditTransfersIDApprovalsApprovalStepIDAccepted, error) {
 	// TODO: Validate the params before sending
 	if params == nil {
 		params = NewPutV1CreditTransfersIDApprovalsApprovalStepIDParams()
@@ -319,7 +319,7 @@ func (a *Client) PutV1CreditTransfersIDApprovalsApprovalStepID(params *PutV1Cred
 	if err != nil {
 		return nil, err
 	}
-	success, ok := result.(*PutV1CreditTransfersIDApprovalsApprovalStepIDOK)
+	success, ok := result.(*PutV1CreditTransfersIDApprovalsApprovalStepIDAccepted)
 	if ok {
 		return success, nil
 	}
